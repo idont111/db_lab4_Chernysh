@@ -38,24 +38,21 @@ $$
 CALL book_by_genre('Diary fiction');
 
 --trigger
-CREATE TRIGGER new_title_insert 
-AFTER INSERT ON book
-FOR EACH ROW EXECUTE FUNCTION new_title()
-
 CREATE OR REPLACE FUNCTION new_title() 
 RETURNS trigger 
 AS $$
      BEGIN
-          UPDATE book 
-          SET title = '2021 ' || title WHERE book.book_id = NEW.book_id; 
+          UPDATE books 
+          SET book_name = '2021' || book_name WHERE books.book_id = NEW.book_id; 
 		  RETURN NULL; 
      END;
 $$ LANGUAGE 'plpgsql';
 
+CREATE TRIGGER new_title_insert 
+AFTER INSERT ON books
+FOR EACH ROW EXECUTE FUNCTION new_title()
 
-select * from book
-
-INSERT INTO book(book_id, title, author_id, genre_id, period_id) 
-VALUES ('14', 'A Stolen Life', '102b', '01', '01j');
-
-select * from book
+SELECT * FROM books 
+INSERT INTO books(book_id, book_name, data_published) 
+VALUES ('14', 'A Stolen Life', to_date('2021-12-23', 'yyyy-mm-dd'));
+SELECT * FROM books 
