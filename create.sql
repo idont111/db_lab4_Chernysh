@@ -1,19 +1,17 @@
+---------------------
+-- Create table books
 ----------------------
--- Create table book
-----------------------
-CREATE TABLE book(
-book_id char(10) NOT NULL,
-title VARCHAR(50) NOT NULL ,
-author_id char(10) NOT NULL,
-genre_id char(10) NOT NULL,
-period_id char(3) NOT NULL
+CREATE TABLE books(
+	book_id CHAR(10) NOT NULL ,
+	book_name CHAR(50) NOT NULL,
+	data_published DATE NOT NULL
 );
 
 ----------------------
--- Create table author
+-- Create table authors
 ----------------------
-CREATE TABLE author(
-	author_id char(10) NOT NULL,
+CREATE TABLE authors(
+	author_id CHAR(10) NOT NULL,
 	first_name VARCHAR(20) NOT NULL,
 	last_name VARCHAR(20) NOT NULL
 );
@@ -21,32 +19,38 @@ CREATE TABLE author(
 ----------------------
 -- Create table genre
 ----------------------
-CREATE TABLE genre(
-    genre_id char(10),
+CREATE TABLE genres(
+    genre_id CHAR(10),
     genre_name VARCHAR(20)
 );
 
 ----------------------
--- Create table period
+-- Create table genre
 ----------------------
-CREATE TABLE rank_period(
-    period_id char(3),
-    rank_period_name date NOT NULL
+CREATE TABLE book_genres(
+	id CHAR(3) NOT NULL,
+    book_id CHAR(10) NOT NULL,
+    genre_id CHAR(10) NOT NULL
 );
 
-----------------------
--- Define primary keys
-----------------------
-ALTER TABLE book ADD CONSTRAINT PK_book PRIMARY KEY (book_id);
-ALTER TABLE author ADD CONSTRAINT PK_author PRIMARY KEY (author_id);
-ALTER TABLE genre ADD CONSTRAINT PK_genre PRIMARY KEY (genre_id);
-ALTER TABLE rank_period ADD CONSTRAINT PK_rank_period PRIMARY KEY (period_id);
-----------------------
--- Define foreign keys
-----------------------
-ALTER TABLE book
-ADD CONSTRAINT FK_author FOREIGN KEY (author_id) REFERENCES author (author_id);
-ALTER TABLE book
-ADD CONSTRAINT FK_genre FOREIGN KEY (genre_id) REFERENCES genre (genre_id);
-ALTER TABLE book
-ADD CONSTRAINT FK_rank_period FOREIGN KEY (period_id) REFERENCES rank_period (period_id);
+CREATE TABLE book_author(
+	id CHAR(3) NOT NULL,
+    book_id CHAR(10) NOT NULL,
+    author_id CHAR(10) NOT NULL
+);
+
+ALTER TABLE books ADD CONSTRAINT PK_books PRIMARY KEY (book_id);
+ALTER TABLE authors ADD CONSTRAINT PK_authors PRIMARY KEY (author_id);
+ALTER TABLE genres ADD CONSTRAINT PK_genres PRIMARY KEY (genre_id);
+ALTER TABLE book_genres ADD CONSTRAINT PK_book_genres PRIMARY KEY (id);
+ALTER TABLE book_author ADD CONSTRAINT PK_book_author PRIMARY KEY (id);
+
+ALTER TABLE book_author
+ADD CONSTRAINT FK_authors FOREIGN KEY (author_id) REFERENCES authors (author_id);
+ALTER TABLE book_author
+ADD CONSTRAINT FK_book_author FOREIGN KEY (book_id) REFERENCES books (book_id);
+
+ALTER TABLE book_genres
+ADD CONSTRAINT FK_genres FOREIGN KEY (genre_id) REFERENCES genres (genre_id);
+ALTER TABLE book_genres
+ADD CONSTRAINT FK_book_genres FOREIGN KEY (book_id) REFERENCES books (book_id);
