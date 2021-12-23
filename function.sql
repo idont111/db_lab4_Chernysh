@@ -6,8 +6,8 @@ DECLARE count_genre NUMERIC;
 
 BEGIN
 	count_genre := (SELECT COUNT(*) 
-					FROM book 
-					JOIN genre ON genre.genre_id = book.genre_id 
+					FROM book_genres 
+					JOIN genres ON genres.genre_id = book_genres.genre_id 
 					WHERE genre_name = name_of_genre);
 	RETURN count_genre;
 END;
